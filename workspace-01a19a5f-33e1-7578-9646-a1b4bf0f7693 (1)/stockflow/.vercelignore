@@ -1,0 +1,21 @@
+# Keep CLI deploys identical to stockflow-deploy.zip (46 files).
+# Tests, fixtures, local data and docs are not needed at runtime.
+node_modules
+data
+screenshots
+tests
+*.md
+!README.md
+.env
+.env.local
+.env.*
+!.env.example
+start.sh
+setup.sh
+Dockerfile
+docker-compose.yml
+.dockerignore
+render.yaml
+Procfile
+.git
+.vercel

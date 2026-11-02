@@ -1,0 +1,61 @@
+# ── StockFlow · local full-stack run ─────────────────────────────────────────
+#   docker compose up --build
+#   → http://localhost:4173   (admin@stockflow.app / Admin@1234)
+#
+# Two profiles:
+#   default  — app only, embedded SQLite in a named volume (zero config)
+#   supabase — app + Postgres, proves the Postgres code path locally
+#
+#   docker compose --profile supabase up --build
+#
+services:
+  app:
+    build: .
+    image: stockflow:latest
+    container_name: stockflow-app
+    ports:
+      - "4173:4173"
+    environment:
+      NODE_ENV: production
+      PORT: 4173
+      JWT_SECRET: ${JWT_SECRET:-local-compose-secret-change-me}
+      # Point at the bundled Postgres when that profile is active, otherwise
+      # leave blank to use SQLite. `DATABASE_URL` wins whenever it is set.
+      DATABASE_URL: ${DATABASE_URL:-}
+      PG_POOL_MAX: "5"
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      FRAME_ANCESTORS: ${FRAME_ANCESTORS:-}
+    volumes:
+      # SQLite data survives container rebuilds.
+      - stockflow-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4173/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  db:
+    image: postgres:17-alpine
+    container_name: stockflow-db
+    profiles: ["supabase"]
+    environment:
+      POSTGRES_USER: stockflow
+      POSTGRES_PASSWORD: stockflow
+      POSTGRES_DB: stockflow
+    ports:
+      - "5433:5432"   # 5433 on the host to avoid clashing with a local Postgres
+    volumes:
+      - stockflow-pg:/var/lib/postgresql/data
+      # schema.sql runs once, on an empty data directory.
+      - ./supabase/schema.sql:/docker-entrypoint-initdb.d/10-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stockflow -d stockflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  stockflow-data:
+  stockflow-pg:

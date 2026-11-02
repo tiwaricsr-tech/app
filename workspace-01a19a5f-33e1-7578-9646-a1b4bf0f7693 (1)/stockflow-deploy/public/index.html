@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1d4ed8" />
+<title>StockFlow — Inventory &amp; Billing</title>
+<meta name="description" content="StockFlow: professional inventory, stock movement tracking and billing management." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d4ed8'/%3E%3Cpath d='M18 40V26l14-8 14 8v14l-14 8-14-8z' fill='none' stroke='white' stroke-width='3.2' stroke-linejoin='round'/%3E%3Cpath d='M18 26l14 8 14-8M32 34v14' stroke='white' stroke-width='3.2' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <div id="boot" class="boot-screen">
+    <div class="boot-logo">
+      <svg viewBox="0 0 64 64" width="46" height="46" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#1d4ed8"/>
+        <path d="M18 40V26l14-8 14 8v14l-14 8-14-8z" fill="none" stroke="white" stroke-width="3.2" stroke-linejoin="round"/>
+        <path d="M18 26l14 8 14-8M32 34v14" stroke="white" stroke-width="3.2" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="boot-text">Loading StockFlow…</div>
+  </div>
+  <div id="app" hidden></div>
+  <div id="toast-root" class="toast-root" aria-live="polite" aria-atomic="true"></div>
+  <div id="modal-root"></div>
+  <script type="module" src="/js/app.js"></script>
+  <script src="/js/boot-watchdog.js"></script>
+</body>
+</html>

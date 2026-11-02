@@ -1,0 +1,16 @@
+# Archives
+*.zip
+
+# Postgres & SQLite Database cluster data
+pgdata/
+*.db
+*.db-*
+*.log
+
+# Dependencies & Node
+node_modules/
+
+# Secrets
+.env
+.env.local
+.env.*.local

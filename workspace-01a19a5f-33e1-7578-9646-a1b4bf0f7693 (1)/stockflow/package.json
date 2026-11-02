@@ -1,0 +1,35 @@
+{
+  "name": "stockflow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "StockFlow — Inventory, Stock Management & Billing System",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "seed": "node src/db/seed.js --reset",
+    "migrate:pg": "node src/db/migrate-to-postgres.js",
+    "sync:supabase": "node src/db/sync-supabase.js",
+    "test": "node tests/integration.test.js",
+    "test:pg": "node tests/postgres-parity.test.js",
+    "test:e2e": "node tests/e2e.js",
+    "test:iframe": "node tests/preview-iframe.test.js",
+    "test:all": "node tests/integration.test.js && node tests/e2e.js && node tests/preview-iframe.test.js",
+    "preview": "bash start.sh",
+    "test:serverless": "node tests/serverless.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "exceljs": "^4.4.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pdfkit": "^0.15.0",
+    "pg": "^8.16.3"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^12.4.1"
+  }
+}

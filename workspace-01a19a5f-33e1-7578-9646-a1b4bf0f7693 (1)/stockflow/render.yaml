@@ -1,0 +1,37 @@
+# Render blueprint — connect this repo and Render provisions everything.
+#   Dashboard → New → Blueprint → pick the repo containing this file.
+#
+# The app boots against Supabase Postgres when DATABASE_URL is present and falls
+# back to embedded SQLite otherwise, so this file keeps working either way.
+services:
+  - type: web
+    name: stockflow
+    runtime: node
+    plan: starter
+    region: frankfurt
+    branch: main
+    buildCommand: npm ci --omit=dev
+    startCommand: node src/server.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "4173"
+      - key: JWT_SECRET
+        generateValue: true          # Render generates a strong secret
+      - key: DATABASE_URL
+        sync: false                  # paste your Supabase URI in the dashboard
+      - key: PG_POOL_MAX
+        value: "3"                   # serverless-friendly
+      - key: CORS_ORIGINS
+        sync: false
+      - key: FRAME_ANCESTORS
+        sync: false
+      - key: DATE_SHIFT_MINUTES
+        value: "330"
+    disk:
+      name: stockflow-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1                      # only needed for the SQLite fallback
